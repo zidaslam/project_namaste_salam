@@ -1,45 +1,21 @@
 <?php
 
-use App\Http\Controllers\DropdownController;
-use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CourseController;
+use app\Models\Course;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
- Route::get('home',function(){
-    return view('home');
- });
- ## Deshboard
+// 
+Route::get('home',[CourseController::class,'index'])->name('course.index');
+Route::get('course/add',[CourseController::class,'create'])->name('course.edit');
+Route::post('course/store',[CourseController::class,'store'])->name('course.store');
 
- Route::get('dashboard',[UserController::class,'dashboard'])->name('dashboardPage');
- 
+// Users
+Route::get('create',[AccountController::class,'index'])->name('index');
+Route::post('fetch-state',[AccountController::class,'fetchState']);
+Route::post('fetch-city',[AccountController::class, 'fetchCity']);
 
-  ## Admin Route
- Route::group(['prefix' => 'admin'], function (){
-    Route::get('form',[DropdownController::class,'index'])->name('formPage');
-    Route::post('store',[RegistrationController::class,'store'])->name('storePage');
-    Route::get('table',[RegistrationController::class,'showTable'])->name('showTable');
-    Route::get('table-edit /{id}',[RegistrationController::class,'editTable'])->name('editTable');
-    Route::put('table-update',[RegistrationController::class,'update'])->name('updateTable');
-    Route::get('table-view /{id}',[RegistrationController::class,'view'])->name('viewTable');
-    Route::delete('table-destroy /{id}',[RegistrationController::class,'destroy'])->name('destroyTable');
-
-  });
-
-  //Trainer route
-  Route::group(['prefix'=> 'trainer'], function(){
-        
-        Route::get('form',[TrainerController::class,'trainerForm'])->name('trainerForm');
-        Route::post('store',[TrainerController::class,'store'])->name('store');
-        Route::get('table',[TrainerController::class,'trainerTable'])->name('trainerTable');
-        Route::get('edit /{id}',[TrainerController::class,'editTable'])->name('editTableTrainer');
-        Route::put('update',[TrainerController::class,'update'])->name('update');
-        Route::delete('destroy/{id}',[TrainerController::class,'destroy'])->name('trainerDestroyTable');
-  });
-// dropdown 
-//Route::get('dropdown',[DropdownController::class,'index'])->name('dropdwon-index');
-Route::post('api/fatch-state',[DropdownController::class,'fetchState']);
-Route::post('api/fatch-city',[DropdownController::class,'fetchCity']);
+Route::post('save',[AccountController::class, 'save']);
+Route::get('list',[AccountController::class, 'list'])->name('list');
+Route::get('edit/{id}',[AccountController::class, 'edit'])->name('edit');
+Route::post('edit/{id}',[AccountController::class, 'update']);
